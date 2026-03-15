@@ -30,9 +30,15 @@ var pluginCspell = require( '@cspell/eslint-plugin' );
 var pluginJsdoc = require( 'eslint-plugin-jsdoc' );
 var pluginImport = require( 'eslint-plugin-import' );
 var pluginExpectType = require( 'eslint-plugin-expect-type' );
+var pluginJsonc = require( 'eslint-plugin-jsonc' );
+var jsoncParser = require( 'jsonc-eslint-parser' );
+var pluginYml = require( 'eslint-plugin-yml' );
+var yamlParser = require( 'yaml-eslint-parser' );
 var stdlibPlugin = require( './lib/node_modules/@stdlib/_tools/eslint/rules/scripts/plugin.js' );
 var allRules = require( './etc/eslint/rules' );
 var tsRules = require( './etc/eslint/rules/typescript.js' );
+var jsonRules = require( './etc/eslint/rules/json.js' );
+var yamlRules = require( './etc/eslint/rules/yaml.js' );
 
 
 // VARIABLES //
@@ -101,6 +107,8 @@ module.exports = [
 			'**/reports/',
 			'dist/',
 			'.git*',
+			'!.github/',
+			'!.codecov.yml',
 
 			// ESLint ignores **/node_modules/ by default. stdlib source
 			// lives in lib/node_modules/, so un-ignore it:
@@ -216,6 +224,102 @@ module.exports = [
 		'files': [ '**/test/**/*.ts' ],
 		'rules': {
 			'jsdoc/require-jsdoc': 'off'
+		}
+	},
+
+	// Base JSON:
+	{
+		'files': [ '**/*.json' ],
+		'languageOptions': {
+			'parser': jsoncParser
+		},
+		'plugins': {
+			'jsonc': pluginJsonc
+		},
+		'rules': jsonRules
+	},
+
+	// cli_opts.json override (tab-indented per .editorconfig):
+	{
+		'files': [ '**/cli_opts.json' ],
+		'rules': {
+			'jsonc/indent': [ 'error', 'tab' ]
+		}
+	},
+
+	// package.json key ordering:
+	{
+		'files': [ '**/package.json' ],
+		'rules': {
+			'jsonc/sort-keys': [ 'error', {
+				'pathPattern': '^$',
+				'order': [
+					'name',
+					'private',
+					'version',
+					'description',
+					'license',
+					'licenses',
+					'author',
+					'maintainers',
+					'contributors',
+					'funding',
+					'bin',
+					'main',
+					'exports',
+					'browser',
+					'unpkg',
+					'gypfile',
+					'directories',
+					'types',
+					'scripts',
+					'homepage',
+					'repository',
+					'repositories',
+					'bugs',
+					'dependencies',
+					'optionalDependencies',
+					'devDependencies',
+					'engines',
+					'os',
+					'keywords',
+					'__stdlib__'
+				]
+			}]
+		}
+	},
+
+	// Base YAML:
+	{
+		'files': [ '**/*.yml' ],
+		'languageOptions': {
+			'parser': yamlParser
+		},
+		'plugins': {
+			'yml': pluginYml,
+			'stdlib': stdlibPlugin
+		},
+		'rules': {
+			...yamlRules,
+			'stdlib/yaml-license-header': 'error'
+		}
+	},
+
+	// GitHub Actions workflow key ordering:
+	{
+		'files': [ '.github/workflows/*.yml' ],
+		'rules': {
+			'yml/sort-keys': [ 'error', {
+				'pathPattern': '^$',
+				'order': [
+					'name',
+					'on',
+					'concurrency',
+					'permissions',
+					'env',
+					'jobs'
+				]
+			}]
 		}
 	}
 ];
