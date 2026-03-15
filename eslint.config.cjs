@@ -88,7 +88,14 @@ module.exports = [
 			'**/build/',
 			'**/reports/',
 			'dist/',
-			'.git*'
+			'.git*',
+
+			// ESLint ignores **/node_modules/ by default. stdlib source
+			// lives in lib/node_modules/, so un-ignore it:
+			'!**/node_modules/',
+
+			// But still ignore the root node_modules (third-party deps):
+			'node_modules/'
 		]
 	},
 
