@@ -564,19 +564,24 @@ rules[ '@typescript-eslint/no-namespace' ] = 'error';
 rules[ '@typescript-eslint/no-non-null-assertion' ] = 'error';
 
 /**
-* Disables the rule against using `require` statements instead of import declarations.
+* Disallows the use of `require` statements except in import statements.
 *
 * @name no-require-imports
 * @memberof rules
 * @type {string}
-* @default 'off'
+* @default 'error'
 * @see [no-require-imports]{@link https://typescript-eslint.io/rules/no-require-imports}
 *
 * @example
-* // Okay...
-* const module = require( 'module' );
+* // Bad...
+* const moduleA = require( 'moduleA' );
+*
+* // Good...
+* import moduleA from 'moduleA';
+*
+* import moduleA = require( 'moduleA' );
 */
-rules[ '@typescript-eslint/no-require-imports' ] = 'off';
+rules[ '@typescript-eslint/no-require-imports' ] = 'error';
 
 /**
 * Disallows aliases for `this`.
@@ -752,22 +757,17 @@ rules[ '@typescript-eslint/no-use-before-define' ] = 'error';
 /**
 * Disallows the use of `require` statements except in import statements.
 *
+* ## Notes
+*
+* -   Deprecated in typescript-eslint v6; replaced by `no-require-imports`.
+*
 * @name no-var-requires
 * @memberof rules
 * @type {string}
-* @default 'error'
+* @default 'off'
 * @see [no-var-requires]{@link https://typescript-eslint.io/rules/no-var-requires}
-*
-* @example
-* // Bad...
-* const moduleA = require( 'moduleA' );
-*
-* // Good...
-* import moduleA from 'moduleA';
-*
-* import moduleA = require( 'moduleA' );
 */
-rules[ '@typescript-eslint/no-var-requires' ] = 'error';
+rules[ '@typescript-eslint/no-var-requires' ] = 'off';
 
 /**
 * Disables the preference for `for-of` loops over standard `for` loops with index variables.
