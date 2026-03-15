@@ -33,12 +33,24 @@ var pluginExpectType = require( 'eslint-plugin-expect-type' );
 var stdlibPlugin = require( './lib/node_modules/@stdlib/_tools/eslint/rules/scripts/plugin.js' );
 var allRules = require( './etc/eslint/rules' );
 var tsRules = require( './etc/eslint/rules/typescript.js' );
-var overrides = require( './etc/eslint/overrides' );
 
 
 // VARIABLES //
 
-var restrictedSyntaxConfig = overrides[ 1 ].rules[ 'no-restricted-syntax' ];
+var restrictedSyntaxConfig = [ 'error',
+	'ArrowFunctionExpression', 'ClassBody', 'ClassDeclaration',
+	'ClassExpression', 'DebuggerStatement', 'ExperimentalRestProperty',
+	'ExperimentalSpreadProperty', 'LabeledStatement', 'RestElement',
+	'SpreadElement', 'TaggedTemplateExpression', 'TemplateElement',
+	'TemplateLiteral', 'WithStatement', 'YieldExpression',
+	'JSXIdentifier', 'JSXNamespacedName', 'JSXMemberExpression',
+	'JSXEmptyExpression', 'JSXExpressionContainer', 'JSXElement',
+	'JSXClosingElement', 'JSXOpeningElement', 'JSXAttribute',
+	'JSXSpreadAttribute', 'JSXText', 'ExportDefaultDeclaration',
+	'ExportNamedDeclaration', 'ExportAllDeclaration', 'ExportSpecifier',
+	'ImportDeclaration', 'ImportSpecifier', 'ImportDefaultSpecifier',
+	'ImportNamespaceSpecifier'
+];
 var nonClonableRules = {};
 var rules = {};
 var val;
